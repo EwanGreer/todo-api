@@ -41,6 +41,7 @@ func main() {
 	)
 
 	pagesHandler := pages.NewPagesHandler()
+	apiHandler := api.NewApiHandler()
 
 	api := srv.Group("/api/v1")
 
