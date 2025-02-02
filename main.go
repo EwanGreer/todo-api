@@ -1,53 +1,45 @@
 package main
 
 import (
-	"embed"
+	"fmt"
 	"log/slog"
 	"os"
 
+	"github.com/EwanGreer/todo/api"
+	"github.com/EwanGreer/todo/pages"
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
-const pagesDir = "public/html"
-
-//go:embed public
-var publicFS embed.FS
-
 func main() {
+	err := godotenv.Load(".env.local")
+	if err != nil {
+		slog.Info("No .env file found")
+	}
+
 	l := slog.New(slog.NewJSONHandler(os.Stderr, nil)).With("service", "todo-api")
 	slog.SetDefault(l)
 
-	e := echo.New()
-	e.HideBanner = true
+	server := echo.New()
+	server.HideBanner = true
 
-	e.Use(
+	server.Use(
 		middleware.RequestID(),
 		middleware.Logger(),
 		middleware.Recover(),
 	)
 
-	e.GET("/", func(c echo.Context) error {
-		b, err := publicFS.ReadFile(pagesDir + "/index.html")
-		if err != nil {
-			slog.Error("ReadFile", "error", err)
-			return c.HTML(500, "<p>Something went wrong</p>")
-		}
+	pagesHandler := pages.NewPagesHandler()
+	apiHandler := api.NewApiHandler()
 
-		return c.HTMLBlob(200, b)
-	})
+	api := server.Group("/api/v1")
 
-	// TODO: auth (JWT)
-	e.GET("/api/user/:id", func(c echo.Context) error {
-		return c.JSON(200, map[string]any{
-			"msg": map[string]any{
-				"username": "user1",
-				"email":    "dummy@emails.com",
-			},
-		})
-	})
+	server.GET("/", pagesHandler.HandleRootPage)
 
-	if err := e.Start("0.0.0.0:8000"); err != nil {
+	api.GET("/user/:id", apiHandler.HandleGetUserById)
+
+	if err := server.Start(fmt.Sprintf("0.0.0.0:%s", os.Getenv("PORT"))); err != nil {
 		slog.Error("Start", "error", err)
 		os.Exit(1)
 	}
