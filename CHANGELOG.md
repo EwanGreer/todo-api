@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.1](https://github.com/EwanGreer/todo-api/compare/v0.2.0...v0.2.1) (2025-02-02)
+
+
+### Bug Fixes
+
+* remove dir + function calls ([ce21fa9](https://github.com/EwanGreer/todo-api/commit/ce21fa9a46835b745059051a206d096aafea5b6a))
+* why was this removed ([6f1a39b](https://github.com/EwanGreer/todo-api/commit/6f1a39b076293d3bdba2355aeee16e50550f673f))
+
 ## [0.2.0](https://github.com/EwanGreer/todo-api/compare/v0.1.0...v0.2.0) (2025-02-02)
 
 
