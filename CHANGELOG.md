@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/EwanGreer/todo-api/compare/v0.1.0...v0.2.0) (2025-02-02)
+
+
+### Features
+
+* restructure ([#3](https://github.com/EwanGreer/todo-api/issues/3)) ([4e52adf](https://github.com/EwanGreer/todo-api/commit/4e52adfbd9511a327cf808ac606a56cfde16fb4e))
+
 ## [0.1.0](https://github.com/EwanGreer/todo-api/compare/0.0.3...v0.1.0) (2025-02-02)
 
 
