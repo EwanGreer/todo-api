@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log/slog"
 	"os"
@@ -12,8 +13,17 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
+var env *string
+
+func init() {
+	env = flag.String("env", "local", "Environment file to read")
+	flag.Parse()
+
+	fmt.Println(*env)
+}
+
 func main() {
-	err := godotenv.Load(".env.local")
+	err := godotenv.Load(fmt.Sprintf(".env.%s", *env))
 	if err != nil {
 		slog.Info("No .env file found")
 	}
@@ -21,25 +31,23 @@ func main() {
 	l := slog.New(slog.NewJSONHandler(os.Stderr, nil)).With("service", "todo-api")
 	slog.SetDefault(l)
 
-	server := echo.New()
-	server.HideBanner = true
+	srv := echo.New()
+	srv.HideBanner = true
 
-	server.Use(
+	srv.Use(
 		middleware.RequestID(),
 		middleware.Logger(),
 		middleware.Recover(),
 	)
 
 	pagesHandler := pages.NewPagesHandler()
-	apiHandler := api.NewApiHandler()
 
-	api := server.Group("/api/v1")
+	api := srv.Group("/api/v1")
 
-	server.GET("/", pagesHandler.HandleRootPage)
-
+	srv.GET("/", pagesHandler.HandleRootPage)
 	api.GET("/user/:id", apiHandler.HandleGetUserById)
 
-	if err := server.Start(fmt.Sprintf("0.0.0.0:%s", os.Getenv("PORT"))); err != nil {
+	if err := srv.Start(fmt.Sprintf("0.0.0.0:%s", os.Getenv("PORT"))); err != nil {
 		slog.Error("Start", "error", err)
 		os.Exit(1)
 	}
