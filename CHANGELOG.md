@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.0](https://github.com/EwanGreer/todo-api/compare/v0.2.0...v0.3.0) (2025-07-10)
+
+
+### Features
+
+* update go version ([e2345e0](https://github.com/EwanGreer/todo-api/commit/e2345e0545e1c7309b2c877022d0eb83cce3695b))
+
+
+### Bug Fixes
+
+* remove dir + function calls ([ce21fa9](https://github.com/EwanGreer/todo-api/commit/ce21fa9a46835b745059051a206d096aafea5b6a))
+* why was this removed ([6f1a39b](https://github.com/EwanGreer/todo-api/commit/6f1a39b076293d3bdba2355aeee16e50550f673f))
+
 ## [0.2.0](https://github.com/EwanGreer/todo-api/compare/v0.1.0...v0.2.0) (2025-02-02)
 
 
